@@ -113,6 +113,11 @@ public class JdbcDBInputFormat<T extends DBWritable>
                 return new MySQLDBRecordReader<T>((DBInputFormat.DBInputSplit) split, inputClass,
                         conf, getConnection(), getDBConf(), conditions, fieldNames,
                         tableName);
+            } else if (dbProductName.startsWith("CLICKHOUSE")) {
+                // use ClickHouse db reader
+                return new ClickhouseRecordReader<T>((DBInputFormat.DBInputSplit) split, inputClass,
+                        conf, getConnection(), getDBConf(), conditions, fieldNames,
+                        tableName);
             } else {
                 // Generic reader.
                 return new GenericDBRecordReader<>((DBInputFormat.DBInputSplit) split, inputClass,
